@@ -1,6 +1,6 @@
 	<div id="comments">
 	<?php if ( post_password_required() ) { ?>
-		<p class="nopassword"><?php _e( 'This post is password protected. Enter the password to view any comments.', 'incp' ); ?></p>
+		<p class="nopassword"><?php _e( 'This post is password protected. Enter the password to view any comments.', 'TEXT_DOMAIN' ); ?></p>
 	</div>
 	<?php return; } ?>
 
@@ -8,7 +8,7 @@
 		<?php kct_response_list( get_the_ID() ); ?>
 
 		<?php if ( !comments_open() && !is_page() && post_type_supports(get_post_type(), 'comments') && get_comments_number() ) { ?>
-			<p class="nocomments"><?php _e( 'Comments are closed.', 'incp' ); ?></p>
+			<p class="nocomments"><?php _e( 'Comments are closed.', 'TEXT_DOMAIN' ); ?></p>
 		<?php } ?>
 
 	<?php } ?>

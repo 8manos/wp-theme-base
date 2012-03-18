@@ -12,7 +12,7 @@
 function kct_check_req( $reqs, $message = '' ) {
 	foreach ( $reqs as $req ) {
 		if ( !class_exists($req) || !function_exists($req) ) {
-			$message .= '<br />&laquo; <a href="'.wp_get_referer().'">'.__('Go back', 'incp').'</a>.';
+			$message .= '<br />&laquo; <a href="'.wp_get_referer().'">'.__('Go back', 'TEXT_DOMAIN').'</a>.';
 			switch_theme( WP_DEFAULT_THEME, WP_DEFAULT_THEME );
 			wp_die( $message );
 		}
@@ -77,7 +77,7 @@ function kct_doc_title( $title ) {
 
 	$site_name = get_bloginfo( 'name', 'display' );
 	$site_desc = get_bloginfo( 'description', 'display');
-	$page_num = ( $paged >= 2 || $page >= 2 ) ? " ${pg_sep} " . sprintf( __('Page %s', 'incp'), max($paged, $page) ) : '';
+	$page_num = ( $paged >= 2 || $page >= 2 ) ? " ${pg_sep} " . sprintf( __('Page %s', 'TEXT_DOMAIN'), max($paged, $page) ) : '';
 
 	# Homepage
 	if ( is_home() || is_front_page() ) {
@@ -210,7 +210,7 @@ function kct_get_comments_count( $post_id = 0, $type = '' ) {
  * Response list (comments & pings)
  */
 function kct_response_list( $post_id = 0 ) {
-	foreach ( array('comment' => __('Comments', 'incp'), 'pings' => __('Pings', 'incp')) as $type => $title ) {
+	foreach ( array('comment' => __('Comments', 'TEXT_DOMAIN'), 'pings' => __('Pings', 'TEXT_DOMAIN')) as $type => $title ) {
 		if ( !kct_get_comments_count($post_id, $type) )
 			continue; ?>
 	<h2 id="<?php echo $type ?>-title"><?php echo apply_filters( "kct_{$type}_list_title", $title, $post_id ) ?></h2>
@@ -240,21 +240,21 @@ function kct_comment_list( $comment, $args, $depth ) {
 				</div>
 
 				<div class="comment-meta commentmetadata">
-					<a href="<?php echo esc_url( get_comment_link( $comment->comment_ID ) ); ?>" class="comment-date"><?php printf( __( '%1$s at %2$s', 'incp' ), get_comment_date(), get_comment_time() ); ?></a>
+					<a href="<?php echo esc_url( get_comment_link( $comment->comment_ID ) ); ?>" class="comment-date"><?php printf( __( '%1$s at %2$s', 'TEXT_DOMAIN' ), get_comment_date(), get_comment_time() ); ?></a>
 					<?php comment_reply_link( array_merge($args, array(
 						'depth'     => $depth,
 						'max_depth' => $args['max_depth'],
 						'before'    => '<span class="reply-link"> &ndash; ',
 						'after'     => '</span>'
 					)) ); ?>
-					<?php edit_comment_link( __('Edit', 'incp'), ' &ndash; ' ); ?>
+					<?php edit_comment_link( __('Edit', 'TEXT_DOMAIN'), ' &ndash; ' ); ?>
 				</div>
 			</footer>
 
 			<div class="comment-content">
 				<?php
 					if ( $comment->comment_approved == '0' )
-						echo '<p><em>'.__( 'Your comment is awaiting moderation.', 'incp' ).'</em></p>';
+						echo '<p><em>'.__( 'Your comment is awaiting moderation.', 'TEXT_DOMAIN' ).'</em></p>';
 					comment_text();
 				?>
 			</div>
@@ -268,7 +268,7 @@ function kct_comment_list( $comment, $args, $depth ) {
  */
 function kct_pings_list( $comment, $args, $depth ) {
 	$GLOBALS['comment'] = $comment; ?>
-	<li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>"><?php comment_author_link(); ?><?php edit_comment_link( __('Edit', 'incp'), ' | ' ); ?>
+	<li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>"><?php comment_author_link(); ?><?php edit_comment_link( __('Edit', 'TEXT_DOMAIN'), ' | ' ); ?>
 <?php }
 
 
@@ -283,11 +283,11 @@ function kct_comment_form_fields( $fields ) {
 	$req = get_option( 'require_name_email' );
 	$aria_req = ($req ? " aria-required='true'" : '');
 
-	$fields['author'] = '<p class="comment-form-author">' . '<label for="author">' . __('Name', 'incp') . ($req ? ' <span class="required">*</span>' : '')  . '</label>'.
+	$fields['author'] = '<p class="comment-form-author">' . '<label for="author">' . __('Name', 'TEXT_DOMAIN') . ($req ? ' <span class="required">*</span>' : '')  . '</label>'.
                       '<input id="author" name="author" type="text" value="' . esc_attr( $commenter['comment_author'] ) . '" size="30"' . $aria_req . ' /></p>';
-	$fields['email']  = '<p class="comment-form-email"><label for="email">' . __('Email', 'incp') . ($req ? ' <span class="required">*</span>' : '') . '</label> ' .
+	$fields['email']  = '<p class="comment-form-email"><label for="email">' . __('Email', 'TEXT_DOMAIN') . ($req ? ' <span class="required">*</span>' : '') . '</label> ' .
                       '<input id="email" name="email" type="text" value="' . esc_attr(  $commenter['comment_author_email'] ) . '" size="30"' . $aria_req . ' /></p>';
-	$fields['url']    = '<p class="comment-form-url"><label for="url">' . __('Website', 'incp') . '</label>' .
+	$fields['url']    = '<p class="comment-form-url"><label for="url">' . __('Website', 'TEXT_DOMAIN') . '</label>' .
                       '<input id="url" name="url" type="text" value="' . esc_attr( $commenter['comment_author_url'] ) . '" size="30" /></p>';
 
 	return $fields;

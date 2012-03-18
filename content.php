@@ -12,7 +12,7 @@
 
 					<?php do_action( 'kct_before_entry_content' ); ?>
 					<div class="entry-content">
-						<?php the_content(__('Continue&hellip;', 'incp')) ?>
+						<?php the_content(__('Continue&hellip;', 'TEXT_DOMAIN')) ?>
 					</div>
 					<?php do_action( 'kct_after_entry_content' ); ?>
 

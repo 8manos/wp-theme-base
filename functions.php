@@ -1,7 +1,7 @@
 <?php
 
 
-class incpTheme {
+class kcTheme {
 	const version = '0.1';
 	public static $dir_theme;
 	public static $url_theme;
@@ -24,12 +24,12 @@ class incpTheme {
 
 	public static function init() {
 		# i18n
-		load_theme_textdomain( 'incp', self::$dir_theme . '/l' );
+		load_theme_textdomain( 'TEXT_DOMAIN', self::$dir_theme . '/l' );
 
 		# Menus
 		register_nav_menus( array(
-			'header' => __('Header Menu', 'virje'),
-			'footer' => __('Footer Menu', 'virje')
+			'main' => __('Header Menu', 'TEXT_DOMAIN'),
+			'footer' => __('Footer Menu', 'TEXT_DOMAIN')
 		) );
 
 		add_action( 'wp_enqueue_scripts', array(__CLASS__, 'sns'), 99 );
@@ -37,13 +37,13 @@ class incpTheme {
 
 
 	public static function sns() {
-		wp_enqueue_style( 'virje', self::$url_theme.'/style.css', false, self::version );
+		wp_enqueue_style( 'TEXT_DOMAIN', self::$url_theme.'/style.css', false, self::version );
 
 		if ( is_singular() && post_type_supports(get_post_type(), 'comments') && comments_open() && get_option('thread_comments') )
 			wp_enqueue_script( 'comment-reply' );
 	}
 }
-add_action( 'after_setup_theme', array('incpTheme', 'setup') );
+add_action( 'after_setup_theme', array('kcTheme', 'setup') );
 
 
 ?>
