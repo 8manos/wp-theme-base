@@ -51,8 +51,8 @@ html {
 	overflow-y:scroll;
 	-webkit-text-size-adjust:100%;
 	-ms-text-size-adjust:100%; }
-::-moz-selection { background:#fe8771; color:#fff; text-shadow:none; }
-::selection { background:#fe8771; color:#fff; text-shadow:none; }
+::-moz-selection { background:#202020; color:#fff; text-shadow:none; }
+::selection { background:#202020; color:#fff; text-shadow:none; }
 a:hover, a:active { outline:0; }
 
 

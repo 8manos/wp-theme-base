@@ -32,7 +32,25 @@ class kcTheme {
 			'footer' => __('Footer Menu', 'TEXT_DOMAIN')
 		) );
 
+		add_action( 'widgets_init', array(__CLASS__, 'register_sidebars') );
 		add_action( 'wp_enqueue_scripts', array(__CLASS__, 'sns'), 99 );
+	}
+
+
+	public static function register_sidebars() {
+		$sidebars = array(
+			'wa-footer' => __('Footer widget area', 'TEXT_DOMAIN'),
+		);
+
+		foreach ( $sidebars as $id => $name )
+			register_sidebar(array(
+				'id'            => $id,
+				'name'          => $name,
+				'before_widget' => '<aside id="%1$s" class="widget %2$s">'."\n",
+				'after_widget'  => '</aside>'."\n",
+				'before_title'  => '<h3 class="widget-title">',
+				'after_title'   => '</h3>'
+			));
 	}
 
 
