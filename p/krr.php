@@ -321,4 +321,46 @@ function kct_page_css_class( $css_class, $page, $depth, $args, $current_page ) {
 }
 add_filter( 'page_css_class', 'kct_page_css_class', 10, 5 );
 
+
+/**
+ * Get related terms
+ *
+ * @param string $tax_1 Base taxonomy name
+ * @param string $tax_1_term Base taxonomy term
+ * @param string $tax_2 Taxonomy name to get terms from
+ * @param string $field Baste taxonomy term field
+ * @return bool|array Terms on success, false on failure
+ */
+function kc_get_related_terms( $tax_1, $tax_1_term, $tax_2, $field = 'slug' ) {
+	if ( !taxonomy_exists($tax_1) || !taxonomy_exists($tax_2) )
+		return false;
+
+	$vars = array(
+		'tax_query' => array(
+			'relation' => 'AND',
+			array(
+				'taxonomy' => $tax_1,
+				'terms'    => $tax_1_term,
+				'field'    => $field
+			)
+		),
+		'posts_per_page' => -1
+	);
+
+	$q = new WP_Query( $vars );
+	if ( !$q->have_posts() )
+		return false;
+
+	$terms = array();
+	while ( $q->have_posts() ) {
+		$q->the_post();
+		$p_terms = get_the_terms( get_the_ID(), $tax_2 );
+		if ( $p_terms )
+			$terms += $p_terms;
+	}
+
+	wp_reset_postdata();
+	return $terms;
+}
+
 ?>
