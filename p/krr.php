@@ -42,13 +42,17 @@ add_filter( 'body_class', 'kct_body_class' );
 /**
  * Print sidebar
  */
-function kct_do_sidebar( $sidebar ) {
+function kct_do_sidebar( $sidebar, $wrap = true, $class = 'sidebar' ) {
 	if ( !is_active_sidebar($sidebar) ) return; ?>
-
+<?php if ( $wrap ) { ?>
+<div id="<?php echo $sidebar ?>" class="<?php echo $class ?>">
+<?php } ?>
 <?php do_action( "kct_before_sidebar_{$sidebar}" ); ?>
 <?php dynamic_sidebar( $sidebar ); ?>
 <?php do_action( "kct_after_sidebar_{$sidebar}" ); ?>
-
+<?php if ( $wrap ) { ?>
+</div>
+<?php } ?>
 <?php }
 
 
