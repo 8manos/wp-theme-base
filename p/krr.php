@@ -63,6 +63,9 @@ function kct_post_class( $classes, $class, $post_id ) {
 	if ( current_theme_supports('post-thumbnails') && has_post_thumbnail() )
 		$classes[] = 'has-post-thumbnail';
 
+	if ( is_singular() && get_queried_object_id() === $post_id )
+		$classes[] = 'kc-current-post';
+
 	return $classes;
 }
 add_filter( 'post_class', 'kct_post_class', 10, 3 );
