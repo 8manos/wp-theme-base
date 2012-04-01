@@ -24,8 +24,10 @@ function kct_check_req( $reqs, $message = '' ) {
  * Some more body classes
  */
 function kct_body_class( $classes ) {
-	if ( is_singular() )
+	if ( is_singular() ) {
 		$classes[] = 'singular';
+		$classes = array_merge( $classes, array_keys(kct_post_sidebars::$post_data) );
+	}
 
 	global $wp_registered_sidebars;
 	if ( !empty($wp_registered_sidebars) ) {
@@ -372,5 +374,130 @@ function kc_get_related_terms( $tax_1, $tax_1_term, $tax_2, $field = 'slug' ) {
 	wp_reset_postdata();
 	return $terms;
 }
+
+/* Enable [embed] shortcode in text widgets */
+global $wp_embed;
+add_filter( 'widget_text', array( $wp_embed, 'run_shortcode' ), 8 );
+add_filter( 'widget_text', array( $wp_embed, 'autoembed'), 8 );
+
+
+/* Single post sidebar setting */
+class kct_post_sidebars {
+	private static $post_types;
+	public static $post_data = array();
+
+
+	public static function init() {
+		$post_types = apply_filters( 'kct_post_sidebars', array() );
+		if ( !$post_types )
+			return;
+
+		self::$post_types = $post_types;
+		add_filter( 'kc_post_settings', array(__CLASS__, 'metadata_post') );
+		add_action( 'get_header', array(__CLASS__, 'post_data') );
+		foreach ( array('kct_before_main', 'kct_before_loop', 'kct_after_loop', 'kct_after_main', 'kct_after_content') as $hook )
+			add_action( $hook, array(__CLASS__, 'post_widget_area') );
+	}
+
+
+	public static function metadata_post( $group ) {
+		$sidebars = kcSettings_options::$sidebars;
+
+		foreach ( self::$post_types as $pt ) {
+			$groups[] = array(
+				$pt => array(
+					array(
+						'id'      => 'misc',
+						'title'   => __('Widget areas', 'TEXT_DOMAIN'),
+						'metabox' => array( 'context' => 'side' ),
+						'fields'  => array(
+							array(
+								'id'      => 'wa-after-header',
+								'title'   => __('After header', 'TEXT_DOMAIN'),
+								'type'    => 'select',
+								'options' => $sidebars
+							),
+							array(
+								'id'      => 'wa-before-page',
+								'title'   => __('Before page', 'TEXT_DOMAIN'),
+								'type'    => 'select',
+								'options' => $sidebars
+							),
+							array(
+								'id'      => 'wa-before-content',
+								'title'   => __('Before content', 'TEXT_DOMAIN'),
+								'type'    => 'select',
+								'options' => $sidebars
+							),
+							array(
+								'id'      => 'wa-after-content',
+								'title'   => __('After content', 'TEXT_DOMAIN'),
+								'type'    => 'select',
+								'options' => $sidebars
+							),
+							array(
+								'id'      => 'wa-side',
+								'title'   => __('Side', 'TEXT_DOMAIN'),
+								'type'    => 'select',
+								'options' => $sidebars
+							),
+							array(
+								'id'      => 'wa-after-page',
+								'title'   => __('After page', 'TEXT_DOMAIN'),
+								'type'    => 'select',
+								'options' => $sidebars
+							),
+							array(
+								'id'      => 'wa-before-footer',
+								'title'   => __('Before footer', 'TEXT_DOMAIN'),
+								'type'    => 'select',
+								'options' => $sidebars
+							)
+						)
+					)
+				)
+			);
+		}
+
+		return $groups;
+	}
+
+
+	public static function post_data() {
+		if ( !is_singular() )
+			return;
+
+		global $post;
+		$meta = get_post_custom( $post->ID );
+		foreach ( array('wa-after-header', 'wa-before-page', 'wa-before-content', 'wa-side', 'wa-after-content', 'wa-after-page', 'wa-before-footer') as $wa ) {
+			if ( isset($meta["_{$wa}"][0]) && $meta["_{$wa}"][0] && is_active_sidebar($meta["_{$wa}"][0]) )
+				self::$post_data["has-{$wa}"] = $meta["_{$wa}"][0];
+		}
+	}
+
+
+	public static function post_widget_area() {
+		$filter = current_filter();
+		$pair = array(
+			'kct_before_content' => array('wa-after-header'),
+			'kct_before_main'    => array('wa-before-page'),
+			'kct_before_loop'    => array('wa-before-content'),
+			'kct_after_loop'     => array('wa-after-content'),
+			'kct_after_main'     => array('wa-side', 'wa-after-page'),
+			'kct_after_content'  => array('wa-before-footer')
+		);
+		if ( !isset($pair[$filter]) )
+			return;
+
+		foreach( $pair[$filter] as $wa ) {
+			if ( isset(self::$post_data["has-$wa"]) ) { ?>
+<div id="wa-<?php echo self::$post_data["has-$wa"] ?>" class="widget-area <?php echo $wa ?>">
+	<?php kct_do_sidebar( self::$post_data["has-$wa"], false ) ?>
+</div>
+			<?php }
+		}
+	}
+}
+add_action( 'init', array('kct_post_sidebars', 'init') );
 
 ?>
