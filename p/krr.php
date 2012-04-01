@@ -29,13 +29,6 @@ function kct_body_class( $classes ) {
 		$classes = array_merge( $classes, array_keys(kct_post_sidebars::$post_data) );
 	}
 
-	global $wp_registered_sidebars;
-	if ( !empty($wp_registered_sidebars) ) {
-		foreach ( array_keys($wp_registered_sidebars) as $sidebar )
-			if ( is_active_sidebar($sidebar) )
-				$classes[] = "active-sidebar-{$sidebar}";
-	}
-
 	return $classes;
 }
 add_filter( 'body_class', 'kct_body_class' );
