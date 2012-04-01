@@ -493,4 +493,7 @@ class kct_post_sidebars {
 }
 add_action( 'init', array('kct_post_sidebars', 'init') );
 
+/* Misc */
+add_filter( 'get_frm_stylesheet', '__return_false' );
+
 ?>
