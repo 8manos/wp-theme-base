@@ -111,9 +111,10 @@ function kct_head_stuff() { ?>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 <!--[if lt IE 9]>
-<?php wp_print_scripts( array('html5') ) ?>
+<?php wp_print_scripts( array('html5', 'html5-print') ) ?>
 <![endif]-->
 <?php }
+add_action( 'wp_head', 'kct_head_stuff', 1 );
 
 
 /**
