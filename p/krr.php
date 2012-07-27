@@ -26,7 +26,8 @@ function kct_check_req( $reqs, $message = '' ) {
 function kct_body_class( $classes ) {
 	if ( is_singular() ) {
 		$classes[] = 'singular';
-		$classes = array_merge( $classes, array_keys(kct_post_sidebars::$post_data) );
+		if ( class_exists('kct_post_sidebars') )
+			$classes = array_merge( $classes, array_keys(kct_post_sidebars::$post_data) );
 	}
 
 	return $classes;
