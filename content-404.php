@@ -10,18 +10,24 @@ else {
 }
 ?>
 
-				<?php do_action( 'kct_before_entry' ); ?>
+				<?php do_action( 'tha_entry_before' ); ?>
 				<article id="not-found" class="hentry entry404">
+					<?php do_action( 'tha_entry_top' ); ?>
+
 					<header class="entry-title">
+						<?php do_action( 'tha_entry_header_top' ); ?>
 						<h1><?php echo $title ?></h1>
-						<?php do_action( 'kct_after_entry_title' ); ?>
+						<?php do_action( 'tha_entry_header_bottom' ); ?>
 					</header>
 
-					<?php do_action( 'kct_before_entry_content' ); ?>
+					<?php do_action( 'tha_entry_content_before' ); ?>
 					<div class="entry-content">
+						<?php do_action( 'tha_entry_content_top' ); ?>
             <p><?php echo $info ?></p>
+						<?php do_action( 'tha_entry_content_bottom' ); ?>
 					</div>
-					<?php do_action( 'kct_after_entry_content' ); ?>
+					<?php do_action( 'tha_entry_content_after' ); ?>
 
+					<?php do_action( 'tha_entry_bottom' ); ?>
 				</article>
-				<?php do_action( 'kct_after_entry' ); ?>
+				<?php do_action( 'tha_entry_after' ); ?>

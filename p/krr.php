@@ -39,15 +39,19 @@ add_filter( 'body_class', 'kct_body_class' );
  */
 function kct_do_sidebar( $sidebar, $wrap = true, $class = 'sidebar' ) {
 	if ( !is_active_sidebar($sidebar) ) return; ?>
+<?php do_action( 'tha_sidebars_before', $sidebar, $wrap, $class ); ?>
 <?php if ( $wrap ) { ?>
 <div id="<?php echo $sidebar ?>" class="<?php echo $class ?>">
 <?php } ?>
-<?php do_action( "kct_before_sidebar_{$sidebar}" ); ?>
+<?php do_action( 'tha_sidebar_top', $sidebar ); ?>
+<?php do_action( "tha_sidebar_top_{$sidebar}"  ); ?>
 <?php dynamic_sidebar( $sidebar ); ?>
-<?php do_action( "kct_after_sidebar_{$sidebar}" ); ?>
+<?php do_action( "tha_sidebar_bottom_{$sidebar}" ); ?>
+<?php do_action( 'tha_sidebar_bottom', $sidebar ); ?>
 <?php if ( $wrap ) { ?>
 </div>
 <?php } ?>
+<?php do_action( 'tha_sidebars_after', $sidebar, $wrap, $class ); ?>
 <?php }
 
 
@@ -218,15 +222,16 @@ function kct_response_list( $post_id = 0 ) {
 	foreach ( array('comment' => __('Comments', 'TEXT_DOMAIN'), 'pings' => __('Pings', 'TEXT_DOMAIN')) as $type => $title ) {
 		if ( !kct_get_comments_count($post_id, $type) )
 			continue; ?>
+	<?php do_action( 'tha_comments_before', $type ) ?>
 	<h2 id="<?php echo $type ?>-title"><?php echo apply_filters( "kct_{$type}_list_title", $title, $post_id ) ?></h2>
-	<?php do_action( "kct_before_{$type}_list" ) ?>
 
+	<?php do_action( 'tha_comments_list_before', $type ) ?>
 	<ol id="<?php echo $type ?>list" class="responselist">
 		<?php wp_list_comments( array('callback' => "kct_{$type}_list", 'type' => $type) ); ?>
 	</ol>
+	<?php do_action( 'tha_comments_list_after', $type ) ?>
 
-	<?php do_action( "kct_after_{$type}_list" ) ?>
-
+	<?php do_action( 'tha_comments_after', $type ) ?>
 	<?php }
 }
 
@@ -237,8 +242,10 @@ function kct_response_list( $post_id = 0 ) {
 function kct_comment_list( $comment, $args, $depth ) {
 	$GLOBALS['comment'] = $comment; ?>
 	<li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>">
+		<?php do_action( 'tha_comment_top', $comment ) ?>
 		<article id="comment-<?php comment_ID(); ?>" class="comment-item">
 			<footer>
+				<?php do_action( 'tha_comment_header_top', $comment ) ?>
 				<div class="comment-author vcard">
 					<?php echo get_avatar( $comment, apply_filters( 'kct_comment_avatar_size', 48) ); ?>
 					<cite class="fn"><?php comment_author_link() ?></cite>
@@ -254,16 +261,20 @@ function kct_comment_list( $comment, $args, $depth ) {
 					)) ); ?>
 					<?php edit_comment_link( __('Edit', 'TEXT_DOMAIN'), ' &ndash; ' ); ?>
 				</div>
+				<?php do_action( 'tha_comment_header_bottom', $comment ) ?>
 			</footer>
 
 			<div class="comment-content">
+				<?php do_action( 'tha_comment_content_top', $comment ) ?>
 				<?php
 					if ( $comment->comment_approved == '0' )
 						echo '<p><em>'.__( 'Your comment is awaiting moderation.', 'TEXT_DOMAIN' ).'</em></p>';
 					comment_text();
 				?>
 			</div>
+			<?php do_action( 'tha_comment_content_bottom', $comment ) ?>
 		</article>
+		<?php do_action( 'tha_comment_bottom', $comment ) ?>
 	<?php
 }
 
@@ -273,7 +284,10 @@ function kct_comment_list( $comment, $args, $depth ) {
  */
 function kct_pings_list( $comment, $args, $depth ) {
 	$GLOBALS['comment'] = $comment; ?>
-	<li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>"><?php comment_author_link(); ?><?php edit_comment_link( __('Edit', 'TEXT_DOMAIN'), ' | ' ); ?>
+	<li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>">
+		<?php do_action( 'tha_comment_content_top', $comment ) ?>
+		<?php comment_author_link(); ?><?php edit_comment_link( __('Edit', 'TEXT_DOMAIN'), ' | ' ); ?>
+		<?php do_action( 'tha_comment_content_bottom', $comment ) ?>
 <?php }
 
 
@@ -373,125 +387,6 @@ global $wp_embed;
 add_filter( 'widget_text', array( $wp_embed, 'run_shortcode' ), 8 );
 add_filter( 'widget_text', array( $wp_embed, 'autoembed'), 8 );
 
-
-/* Single post sidebar setting */
-class kct_post_sidebars {
-	private static $post_types;
-	public static $post_data = array();
-
-
-	public static function init() {
-		$post_types = apply_filters( 'kct_post_sidebars', array() );
-		if ( !$post_types )
-			return;
-
-		self::$post_types = $post_types;
-		add_filter( 'kc_post_settings', array(__CLASS__, 'metadata_post') );
-		add_action( 'get_header', array(__CLASS__, 'post_data') );
-		foreach ( array('kct_before_main', 'kct_before_loop', 'kct_after_loop', 'kct_after_main', 'kct_after_content') as $hook )
-			add_action( $hook, array(__CLASS__, 'post_widget_area') );
-	}
-
-
-	public static function metadata_post( $group ) {
-		$sidebars = kcSettings_options::$sidebars;
-
-		foreach ( self::$post_types as $pt ) {
-			$groups[] = array(
-				$pt => array(
-					array(
-						'id'      => 'misc',
-						'title'   => __('Widget areas', 'TEXT_DOMAIN'),
-						'metabox' => array( 'context' => 'side' ),
-						'fields'  => array(
-							array(
-								'id'      => 'wa-after-header',
-								'title'   => __('After header', 'TEXT_DOMAIN'),
-								'type'    => 'select',
-								'options' => $sidebars
-							),
-							array(
-								'id'      => 'wa-before-page',
-								'title'   => __('Before page', 'TEXT_DOMAIN'),
-								'type'    => 'select',
-								'options' => $sidebars
-							),
-							array(
-								'id'      => 'wa-before-content',
-								'title'   => __('Before content', 'TEXT_DOMAIN'),
-								'type'    => 'select',
-								'options' => $sidebars
-							),
-							array(
-								'id'      => 'wa-after-content',
-								'title'   => __('After content', 'TEXT_DOMAIN'),
-								'type'    => 'select',
-								'options' => $sidebars
-							),
-							array(
-								'id'      => 'wa-side',
-								'title'   => __('Side', 'TEXT_DOMAIN'),
-								'type'    => 'select',
-								'options' => $sidebars
-							),
-							array(
-								'id'      => 'wa-after-page',
-								'title'   => __('After page', 'TEXT_DOMAIN'),
-								'type'    => 'select',
-								'options' => $sidebars
-							),
-							array(
-								'id'      => 'wa-before-footer',
-								'title'   => __('Before footer', 'TEXT_DOMAIN'),
-								'type'    => 'select',
-								'options' => $sidebars
-							)
-						)
-					)
-				)
-			);
-		}
-
-		return $groups;
-	}
-
-
-	public static function post_data() {
-		if ( !is_singular() )
-			return;
-
-		global $post;
-		$meta = get_post_custom( $post->ID );
-		foreach ( array('wa-after-header', 'wa-before-page', 'wa-before-content', 'wa-side', 'wa-after-content', 'wa-after-page', 'wa-before-footer') as $wa ) {
-			if ( isset($meta["_{$wa}"][0]) && $meta["_{$wa}"][0] && is_active_sidebar($meta["_{$wa}"][0]) )
-				self::$post_data["has-{$wa}"] = $meta["_{$wa}"][0];
-		}
-	}
-
-
-	public static function post_widget_area() {
-		$filter = current_filter();
-		$pair = array(
-			'kct_before_content' => array('wa-after-header'),
-			'kct_before_main'    => array('wa-before-page'),
-			'kct_before_loop'    => array('wa-before-content'),
-			'kct_after_loop'     => array('wa-after-content'),
-			'kct_after_main'     => array('wa-side', 'wa-after-page'),
-			'kct_after_content'  => array('wa-before-footer')
-		);
-		if ( !isset($pair[$filter]) )
-			return;
-
-		foreach( $pair[$filter] as $wa ) {
-			if ( isset(self::$post_data["has-$wa"]) ) { ?>
-<div id="wa-<?php echo self::$post_data["has-$wa"] ?>" class="widget-area <?php echo $wa ?>">
-	<?php kct_do_sidebar( self::$post_data["has-$wa"], false ) ?>
-</div>
-			<?php }
-		}
-	}
-}
-add_action( 'init', array('kct_post_sidebars', 'init') );
 
 /* Misc */
 add_filter( 'get_frm_stylesheet', '__return_false' );

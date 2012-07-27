@@ -1,6 +1,5 @@
 <?php
 
-
 class kcTheme {
 	const version = '0.1';
 	public static $dir_theme;
@@ -19,6 +18,10 @@ class kcTheme {
 			$content_width = 620;
 
 		self::init();
+
+		// Theme Hook Alliance
+		define( 'THA_HOOKS_VERSION', '1.0-draft' );
+		add_theme_support( 'tha_hooks', array('all') );
 	}
 
 
@@ -64,6 +67,5 @@ class kcTheme {
 	}
 }
 add_action( 'after_setup_theme', array('kcTheme', 'setup') );
-
 
 ?>
