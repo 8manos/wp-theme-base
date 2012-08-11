@@ -221,6 +221,14 @@ function kct_get_comments_count( $post_id = 0, $type = '' ) {
  * Response list (comments & pings)
  */
 function kct_response_list( $post_id = 0 ) {
+	if ( !$post_id ) {
+		global $post;
+		if ( !is_object($post) )
+			return;
+
+		$post_id = $post->ID;
+	}
+
 	foreach ( array('comment' => __('Comments', 'TEXT_DOMAIN'), 'pings' => __('Pings', 'TEXT_DOMAIN')) as $type => $title ) {
 		if ( !kct_get_comments_count($post_id, $type) )
 			continue; ?>

@@ -38,6 +38,7 @@ class kcTheme {
 
 		add_action( 'widgets_init', array(__CLASS__, 'register_sidebars') );
 		add_action( 'wp_enqueue_scripts', array(__CLASS__, 'sns'), 99 );
+		add_action( 'tha_entry_content_after', array(__CLASS__, 'comments') );
 	}
 
 
@@ -66,6 +67,12 @@ class kcTheme {
 
 		if ( is_singular() && post_type_supports(get_post_type(), 'comments') && comments_open() && get_option('thread_comments') )
 			wp_enqueue_script( 'comment-reply' );
+	}
+
+
+	public static function comments() {
+		if ( is_singular() && get_comments_number() )
+			comments_template( '', true );
 	}
 }
 add_action( 'after_setup_theme', array('kcTheme', 'setup') );
