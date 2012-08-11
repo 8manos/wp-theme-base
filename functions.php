@@ -62,8 +62,8 @@ class kcTheme {
 	public static function sns() {
 		wp_enqueue_style( 'TEXT_DOMAIN', self::$url_theme.'/style.css', false, self::version );
 
-		wp_register_script( 'html5', self::$url_theme.'/j/html5shiv.js', false, 'latest' );
-		wp_register_script( 'html5-print', self::$url_theme.'/j/html5shiv-printshiv.js', false, 'latest' );
+		wp_register_script( 'html5', self::$url_theme.'/j/html5shiv.js', false, '3.6' );
+		wp_register_script( 'html5-print', self::$url_theme.'/j/html5shiv-printshiv.js', false, '3.6' );
 
 		if ( is_singular() && post_type_supports(get_post_type(), 'comments') && comments_open() && get_option('thread_comments') )
 			wp_enqueue_script( 'comment-reply' );
