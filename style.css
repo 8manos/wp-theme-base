@@ -224,6 +224,15 @@ table {
 	text-align: center;
 	line-height: 1.15;
 }
+ul.page-numbers {padding:0}
+ul.page-numbers li {
+	display:inline;
+	margin:0 .1em;
+}
+a.page-numbers,
+span.page-numbers {
+	padding:0 .25em;
+}
 
 
 /*** Start here ***/
