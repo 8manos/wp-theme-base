@@ -18,15 +18,10 @@ class kcTheme {
 		if ( ! isset( $content_width ) )
 			$content_width = 920;
 
-		self::init();
-
 		// Theme Hook Alliance
 		define( 'THA_HOOKS_VERSION', '1.0-draft' );
 		add_theme_support( 'tha_hooks', array('all') );
-	}
 
-
-	public static function init() {
 		# i18n
 		load_theme_textdomain( 'TEXT_DOMAIN', self::$dir_theme . '/l' );
 
@@ -36,9 +31,14 @@ class kcTheme {
 			'footer' => __('Footer Menu', 'TEXT_DOMAIN')
 		) );
 
+		add_action( 'init', array(__CLASS__, 'init') );
 		add_action( 'widgets_init', array(__CLASS__, 'register_sidebars') );
-		add_action( 'wp_enqueue_scripts', array(__CLASS__, 'sns'), 99 );
+		add_action( 'wp_enqueue_scripts', array(__CLASS__, 'sns'), 100 );
 		add_action( 'tha_entry_content_after', array(__CLASS__, 'comments') );
+	}
+
+
+	public static function init() {
 	}
 
 
