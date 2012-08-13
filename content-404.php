@@ -9,7 +9,6 @@ else {
 	$info = __('Apologies, but no results were found for the requested archive. Perhaps searching will help find a related post.', 'TEXT_DOMAIN');
 }
 ?>
-
 				<?php do_action( 'tha_entry_before' ); ?>
 				<article id="not-found" class="hentry entry404">
 					<?php do_action( 'tha_entry_top' ); ?>

@@ -400,5 +400,3 @@ add_filter( 'widget_text', array( $wp_embed, 'autoembed'), 8 );
 
 /* Misc */
 add_filter( 'get_frm_stylesheet', '__return_false' );
-
-?>

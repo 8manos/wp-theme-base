@@ -76,5 +76,3 @@ class kcTheme {
 	}
 }
 add_action( 'after_setup_theme', array('kcTheme', 'setup') );
-
-?>

@@ -1,9 +1,7 @@
 <?php
-
 ob_start();
 language_attributes();
 $lang_attr = ob_get_clean();
-
 ?>
 <!doctype html>
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
