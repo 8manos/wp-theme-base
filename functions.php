@@ -12,7 +12,7 @@ class kcTheme {
 
 		# The libs
 		require_once "{$dir}/p/krr.php";
-		if ( !class_exists('kcMS_Dropdown_Menu') && !is_admin() )
+		if ( !class_exists('kcMU_Dropdown_Menu') && !is_admin() )
 			require_once "{$dir}/p/kc-dropdown-menu.php";
 
 		# Set the content width based on the theme's design and stylesheet.

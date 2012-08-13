@@ -38,7 +38,7 @@ $lang_attr = ob_get_clean();
 						'menu_class'      => 'menu main-menu',
 						'fallback_cb'     => false
 					) );
-					kcMS_Dropdown_Menu::get_menu( $menu_id, array(
+					kcMU_Dropdown_Menu::get_menu( $menu_id, array(
 						'menu_id' => 'main-menu-small',
 						'select_text' => '&mdash;&nbsp;'.__('Navigate', 'THEME_NAME').'&nbsp;&mdash;',
 						'submit_text' => __('Go', 'THEME_NAME')
