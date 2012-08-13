@@ -10,8 +10,10 @@ class kcTheme {
 		self::$dir_theme = $dir = get_template_directory();
 		self::$url_theme = get_template_directory_uri();
 
-		# The mini-lib
+		# The libs
 		require_once "{$dir}/p/krr.php";
+		if ( !class_exists('kcMS_Dropdown_Menu') && !is_admin() )
+			require_once "{$dir}/p/kc-dropdown-menu.php";
 
 		# Set the content width based on the theme's design and stylesheet.
 		global $content_width;

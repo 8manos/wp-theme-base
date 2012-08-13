@@ -392,6 +392,21 @@ function kc_get_related_terms( $tax_1, $tax_1_term, $tax_2, $field = 'slug' ) {
 	return $terms;
 }
 
+
+function kc_get_menu_by_location( $location ) {
+	$menu_id = false;
+	if (
+		( $locations = get_nav_menu_locations() )
+		&& isset( $locations[ $location ] )
+	) {
+		$menu = wp_get_nav_menu_object( $locations[ $location ] );
+		$menu_id = $menu->term_id;
+	}
+
+	return $menu_id;
+}
+
+
 /* Enable [embed] shortcode in text widgets */
 global $wp_embed;
 add_filter( 'widget_text', array( $wp_embed, 'run_shortcode' ), 8 );

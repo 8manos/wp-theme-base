@@ -8,8 +8,8 @@ Version: 0.1
 */
 
 
+body {overflow-y:scroll;}
 /*! normalize.css 2012-07-07T09:50 UTC - http://github.com/necolas/normalize.css */
-
 article, aside, details, figcaption, figure, footer, header, hgroup, nav, section, summary { display: block; }
 audio,
 canvas,
@@ -235,13 +235,6 @@ span.page-numbers {
 }
 
 
-/*** Start here ***/
-#page {
-	width: 940px;
-	margin: 0 auto;
-}
-
-
 /* Helper classes */
 /* For image replacement */
 .ir { display: block; border: 0; text-indent: -999em; overflow: hidden; background-color: transparent; background-repeat: no-repeat; text-align: left; direction: ltr; *line-height: 0; }
@@ -253,6 +246,22 @@ span.page-numbers {
 /* Extends the .visuallyhidden class to allow the element to be focusable when navigated to via the keyboard: h5bp.com/p */
 .visuallyhidden.focusable:active, .visuallyhidden.focusable:focus { clip: auto; height: auto; margin: 0; overflow: visible; position: static; width: auto; }
 
+
+/*** Start here ***/
+#colophon {clear:both}
+#page { padding:1em; }
+#main-menu {display:none;}
+
+
+@media only screen and (min-width: 1020px) {
+	#page {
+		padding:0;
+		width:920px;
+		margin:0 auto;
+	}
+	#main-menu {display:block;}
+	#main-menu-small {display:none;}
+}
 
 /* Print styles */
 @media print {
