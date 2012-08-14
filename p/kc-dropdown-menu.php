@@ -12,16 +12,7 @@ if ( is_admin() )
 	return;
 
 class kcMU_Dropdown_Menu {
-	public static function get_current_url() {
-		global $wp;
-		if ( get_option('permalink_structure') )
-			$url = home_url( $wp->request );
-		else
-			$url = add_query_arg( $wp->query_string, '', home_url('/') );
-
-		return $url;
-	}
-
+	private static $did_js = false;
 
 	public static function get_menu( $menu_id, $args = array() ) {
 		$menu = wp_get_nav_menu_object( $menu_id );
@@ -37,8 +28,8 @@ class kcMU_Dropdown_Menu {
 			'pad'         => '&mdash;',
 			'echo'        => true,
 			'submit_text' => __('Submit'),
-			'select_text' => '',
-			'js'          => false,
+			'select_text' => '&mdash;&nbsp;'.__('Navigate', 'THEME_NAME').'&nbsp;&mdash;',
+			'js'          => true,
 			'menu_class'  => '',
 			'menu_id'     => ''
 		) );
@@ -46,50 +37,53 @@ class kcMU_Dropdown_Menu {
 		$walk = new kcMS_Walker_Menu;
 		$walk->pad = $args['pad'];
 		$menu_items = $walk->walk( $items, $args['depth'], $args );
-		$current_url = rtrim( self::get_current_url(), '/' );
 
-		$f_args = array(
-			'type' => 'select',
-			'attr' => array( 'name' => 'kcform[url]' ),
-			'options' => $menu_items
-		);
-		if ( !empty($args['select_text']) ) {
-			$f_args['none'] = $args['select_text'];
-		}
-		else {
-			$f_args['current'] = $current_url;
-			$f_args['none'] = false;
-		}
-
-		$class = 'kcss';
+		$class = 'kcform kcmenu';
 		if ( $args['menu_class'] )
 			$class .= " {$args['menu_class']}";
 
-		$f_attr = 'class="'.$class.'" method="post" action="'.esc_attr( esc_url($current_url) ).'"';
+		$f_attr = 'class="'.$class.'" method="post"';
 		if ( $args['menu_id'] )
 			$f_attr .= ' id="'.$args['menu_id'].'"';
 
 		$out  = '<form '.$f_attr.'>' . PHP_EOL;
-		$out .= '<select name="kcform[url]">' . PHP_EOL;
-		if ( $args['select_text'] )
+		$out .= '<select name="kcform[menu-id]">' . PHP_EOL;
+		if ( !empty($args['select_text']) )
 			$out .= '<option value="">'.$args['select_text'].'</option>' . PHP_EOL;
-		foreach( $menu_items as $_url => $title ) {
-			$url = rtrim($_url, '/');
-			$out .= '<option value="'.esc_attr( esc_url($url) ).'"';
-			if ( !$args['select_text'] && $current_url == $url )
-				$out .= ' selected="selected"';
-			$out .= '>'.$title.'</option>' . PHP_EOL;
-		}
+		foreach( $menu_items as $_id => $_title )
+			$out .= '<option value="'.$_id.'">'.$_title.'</option>' . PHP_EOL;
 		$out .= '</select>' . PHP_EOL;
-		$out .= '<input type="hidden" name="kcform[current]" value="'.$current_url.'" />' . PHP_EOL;
-		$out .= '<button type="submit" name="kcform[action]" value="menu">'.$args['submit_text'].'</button>' . PHP_EOL;
+		$out .= '<input type="hidden" value="menu" name="kcform[action]" />' . PHP_EOL;
+		$out .= '<button type="submit">'.$args['submit_text'].'</button>' . PHP_EOL;
 		$out .= '</form>' . PHP_EOL;
+
+		if ( $args['js'] && !self::$did_js ) {
+			self::$did_js = true;
+			wp_enqueue_script( 'jquery' );
+			add_action( 'wp_print_footer_scripts', array(__CLASS__, 'print_js'), 999 );
+		}
 
 		if ( $args['echo'] )
 			echo $out;
 		else
 			return $out;
 	}
+
+
+	public static function print_js() { ?>
+<script>
+	jQuery(document).ready(function($) {
+		$('form.kcmenu').submit(function(e) {
+			if ( !$(this).children('select').val() )
+				e.preventDefault();
+		})
+			.children('select').change(function() {
+				if ( this.value )
+					this.form.submit();
+			});
+	});
+</script>
+	<?php }
 
 
 	public static function _catch() {
@@ -100,18 +94,14 @@ class kcMU_Dropdown_Menu {
 		)
 			return;
 
-		if (
-			isset( $_POST['kcform']['url'] )
-			&& !empty( $_POST['kcform']['url'] )
-			&& $_POST['kcform']['url'] != $_POST['kcform']['current']
-		) {
-			$url = ( get_option('permalink_structure') ) ? trailingslashit( $_POST['kcform']['url'] ) : $_POST['kcform']['url'];
-			wp_redirect( $url );
+		if ( isset( $_POST['kcform']['menu-id'] ) && $_POST['kcform']['menu-id'] ) {
+			$m = wp_setup_nav_menu_item( get_post( $_POST['kcform']['menu-id'] ) );
+			wp_redirect( $m->url );
 			exit;
 		}
 	}
 }
-add_action( 'init', array('kcMU_Dropdown_Menu', '_catch'), 0 );
+add_action( 'init', array('kcMU_Dropdown_Menu', '_catch') );
 
 
 class kcMS_Walker_Menu extends Walker {
@@ -121,6 +111,6 @@ class kcMS_Walker_Menu extends Walker {
 
 	function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
 		$indent = ( $depth && !empty($this->pad) ) ? str_repeat( $this->pad, $depth ) .'&nbsp;' : '';
-		$output[$item->url] = $indent . apply_filters( 'the_title', $item->title, $item->ID );
+		$output[$item->ID] = $indent . apply_filters( 'the_title', $item->title, $item->ID );
 	}
 }

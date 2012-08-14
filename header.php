@@ -40,7 +40,6 @@ $lang_attr = ob_get_clean();
 					) );
 					kcMU_Dropdown_Menu::get_menu( $menu_id, array(
 						'menu_id' => 'main-menu-small',
-						'select_text' => '&mdash;&nbsp;'.__('Navigate', 'THEME_NAME').'&nbsp;&mdash;',
 						'submit_text' => __('Go', 'THEME_NAME')
 					) );
 				}
