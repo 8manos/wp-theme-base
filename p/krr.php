@@ -393,15 +393,21 @@ function kc_get_related_terms( $tax_1, $tax_1_term, $tax_2, $field = 'slug' ) {
 }
 
 
+/**
+ * Get nav menu ID by theme location
+ *
+ * @param string $location Theme location
+ * @return bool|int Menu ID. False on failure
+ */
 function kc_get_menu_by_location( $location ) {
 	$menu_id = false;
 	if (
 		( $locations = get_nav_menu_locations() )
-		&& isset( $locations[ $location ] )
-	) {
-		$menu = wp_get_nav_menu_object( $locations[ $location ] );
+		&& isset( $locations[$location] )
+		&& ( $menu = wp_get_nav_menu_object( $locations[$location] ) )
+		&& !is_wp_error( $menu )
+	)
 		$menu_id = $menu->term_id;
-	}
 
 	return $menu_id;
 }
