@@ -37,6 +37,9 @@ class kcEssentials_Dropdown_Menu {
 		$walk = new kcWalker_Menu;
 		$walk->pad = $args['pad'];
 		$menu_items = $walk->walk( $items, $args['depth'], $args );
+		$menu_items = apply_filters( 'kc_dropdown_menu_items', $menu_items, $menu_id, $args );
+		if ( empty($menu_items) )
+			return;
 
 		$class = 'kcform kcmenu';
 		if ( $args['menu_class'] )
