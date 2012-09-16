@@ -1,7 +1,6 @@
 <?php
 
 class kcTheme {
-	const version = '0.1';
 	public static $dir_theme;
 	public static $url_theme;
 
@@ -62,7 +61,8 @@ class kcTheme {
 
 
 	public static function sns() {
-		wp_enqueue_style( 'TEXT_DOMAIN', self::$url_theme.'/style.css', false, self::version );
+		$ver = '20120915';
+		wp_enqueue_style( 'TEXT_DOMAIN', self::$url_theme.'/style.css', false, $ver );
 
 		wp_register_script( 'html5', self::$url_theme.'/j/html5shiv.js', false, '3.6' );
 		wp_register_script( 'html5-print', self::$url_theme.'/j/html5shiv-printshiv.js', false, '3.6' );
