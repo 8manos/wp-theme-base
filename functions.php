@@ -52,8 +52,8 @@ class kcTheme {
 			register_sidebar(array(
 				'id'            => $id,
 				'name'          => $name,
-				'before_widget' => '<aside id="%1$s" class="widget %2$s">'."\n",
-				'after_widget'  => '</aside>'."\n",
+				'before_widget' => '<aside id="%1$s" class="widget %2$s">'.PHP_EOL,
+				'after_widget'  => '</aside>'.PHP_EOL,
 				'before_title'  => '<h3 class="widget-title">',
 				'after_title'   => '</h3>'
 			));

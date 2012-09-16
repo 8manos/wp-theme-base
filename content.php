@@ -6,7 +6,7 @@
 						<?php do_action( 'tha_entry_header_top' ); ?>
 						<?php
 							if ( $_title = get_the_title() ) {
-								$title = is_singular() ? "<h1>{$_title}</h1>\n" : "<h1><a href='".get_permalink()."' title='".the_title_attribute(array('echo' => false))."'>{$_title}</a></h1>\n";
+								$title = is_singular() ? "<h1>{$_title}</h1>".PHP_EOL : "<h1><a href='".get_permalink()."' title='".the_title_attribute(array('echo' => false))."'>{$_title}</a></h1>".PHP_EOL;
 								echo apply_filters( 'kct_entry_title', $title, $_title );
 							}
 						?>

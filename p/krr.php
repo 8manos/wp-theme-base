@@ -145,7 +145,7 @@ function kct_paginate_links( $query = null, $echo = true ) {
 		return false;
 
 	if ( $echo )
-		echo "<nav class='posts-nav'>\n\t{$links}</nav>\n";
+		echo '<nav class="posts-nav">'.PHP_EOL."\t{$links}</nav>".PHP_EOL;
 	else
 		return $links;
 }
@@ -191,10 +191,10 @@ function kct_post_terms( $post_object = '', $echo = true ) {
 	if ( !$echo )
 		return $terms;
 
-	$out  = "<ul class='entry-terms'>\n";
+	$out  = '<ul class="entry-terms">'.PHP_EOL;
 	foreach ( $terms as $tax => $tax_terms )
 		$out .= "\t<li class='{$tax}'><span class='label'>{$tax_terms['label']}:</span> {$tax_terms['terms']}</li>";
-	$out .="</ul>\n";
+	$out .= '</ul>'.PHP_EOL;
 
 	echo $out;
 }
