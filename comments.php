@@ -7,7 +7,7 @@
 	<?php if ( have_comments() ) { ?>
 		<?php kct_response_list( get_the_ID() ); ?>
 
-		<?php if ( !comments_open() && !is_page() && post_type_supports(get_post_type(), 'comments') ) { ?>
+		<?php if ( !comments_open() ) { ?>
 			<p class="nocomments"><?php _e( 'Comments are closed.', 'TEXT_DOMAIN' ); ?></p>
 		<?php } ?>
 

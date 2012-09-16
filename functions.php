@@ -73,7 +73,7 @@ class kcTheme {
 
 
 	public static function comments() {
-		if ( is_singular() && (get_comments_number() || comments_open()) )
+		if ( is_singular() && ( get_comments_number() || ( post_type_supports( get_post_type(), 'comments' ) && comments_open() ) ) )
 			comments_template( '', true );
 	}
 }
