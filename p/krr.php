@@ -32,7 +32,6 @@ function kct_body_class( $classes ) {
 
 	return $classes;
 }
-add_filter( 'body_class', 'kct_body_class' );
 
 
 /**
@@ -68,7 +67,6 @@ function kct_post_class( $classes, $class, $post_id ) {
 
 	return $classes;
 }
-add_filter( 'post_class', 'kct_post_class', 10, 3 );
 
 
 /**
@@ -101,8 +99,6 @@ function kct_doc_title( $title ) {
 
 	return $title;
 }
-if ( !defined('WPSEO_VERSION') )
-	add_filter( 'wp_title', 'kct_doc_title' );
 
 
 # <head /> stuff
@@ -114,7 +110,6 @@ function kct_head_stuff() { ?>
 <?php wp_print_scripts( array('html5', 'html5-print') ) ?>
 <![endif]-->
 <?php }
-add_action( 'wp_head', 'kct_head_stuff', 1 );
 
 
 /**
@@ -321,7 +316,6 @@ function kct_comment_form_fields( $fields ) {
 
 	return $fields;
 }
-add_filter( 'comment_form_default_fields', 'kct_comment_form_fields' );
 
 
 /**
@@ -411,13 +405,3 @@ function kc_get_menu_by_location( $location ) {
 
 	return $menu_id;
 }
-
-
-/* Enable [embed] shortcode in text widgets */
-global $wp_embed;
-add_filter( 'widget_text', array( $wp_embed, 'run_shortcode' ), 8 );
-add_filter( 'widget_text', array( $wp_embed, 'autoembed'), 8 );
-
-
-/* Misc */
-add_filter( 'get_frm_stylesheet', '__return_false' );

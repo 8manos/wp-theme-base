@@ -32,14 +32,28 @@ class kcTheme {
 			'footer' => __('Footer Menu', 'TEXT_DOMAIN')
 		) );
 
-		add_action( 'init', array(__CLASS__, 'init') );
+		add_action( 'init', array(__CLASS__, 'defaults') );
 		add_action( 'widgets_init', array(__CLASS__, 'register_sidebars') );
 		add_action( 'wp_enqueue_scripts', array(__CLASS__, 'sns'), 100 );
 		add_action( 'tha_entry_content_after', array(__CLASS__, 'comments') );
 	}
 
 
-	public static function init() {
+	public static function defaults() {
+		add_action( 'wp_head', 'kct_head_stuff', 1 );
+		add_filter( 'body_class', 'kct_body_class' );
+		add_filter( 'post_class', 'kct_post_class', 10, 3 );
+		add_filter( 'comment_form_default_fields', 'kct_comment_form_fields' );
+		add_filter( 'page_css_class', 'kct_page_css_class', 10, 5 );
+
+		/* Enable [embed] shortcode in text widgets */
+		global $wp_embed;
+		add_filter( 'widget_text', array( $wp_embed, 'run_shortcode' ), 8 );
+		add_filter( 'widget_text', array( $wp_embed, 'autoembed'), 8 );
+		/* Misc */
+		add_filter( 'get_frm_stylesheet', '__return_false' );
+		if ( !defined('WPSEO_VERSION') )
+			add_filter( 'wp_title', 'kct_doc_title' );
 	}
 
 
