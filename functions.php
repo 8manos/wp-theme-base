@@ -35,6 +35,7 @@ class kcTheme {
 		add_action( 'init', array(__CLASS__, 'defaults') );
 		add_action( 'widgets_init', array(__CLASS__, 'register_sidebars') );
 		add_action( 'wp_enqueue_scripts', array(__CLASS__, 'sns'), 100 );
+		add_action( 'wp_print_footer_scripts', array(__CLASS__, '_sns_vars'), 9 );
 		add_action( 'tha_entry_content_after', array(__CLASS__, 'comments') );
 	}
 
@@ -81,9 +82,24 @@ class kcTheme {
 		wp_register_script( 'html5', self::$url_theme.'/j/html5shiv.js', false, '3.6' );
 		wp_register_script( 'html5-print', self::$url_theme.'/j/html5shiv-printshiv.js', false, '3.6' );
 
+		#wp_register_script( 'yepnope', self::$url_theme.'/j/yepnope.1.5.4-min.js', false, '1.5.4', true );
+		#wp_enqueue_script( 'TEXT_DOMAIN', self::$url_theme.'/j/scripts.js', array('yepnope', 'jquery'), $ver, true );
+
 		if ( is_singular() && post_type_supports(get_post_type(), 'comments') && comments_open() && get_option('thread_comments') )
 			wp_enqueue_script( 'comment-reply' );
 	}
+
+
+	public static function _sns_vars() { ?>
+<script>
+	var kcTheme = <?php echo json_encode(array(
+		'locale'   => get_locale(),
+		'homeURL'  => home_url(),
+		'themeURL' => self::$url_theme,
+		'js'       => kc_get_sns( array(), 'js' )
+	)) ?>
+</script>
+	<?php }
 
 
 	public static function comments() {
