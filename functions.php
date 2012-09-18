@@ -35,7 +35,7 @@ class kcTheme {
 		add_action( 'init', array(__CLASS__, 'defaults') );
 		add_action( 'widgets_init', array(__CLASS__, 'register_sidebars') );
 		add_action( 'wp_enqueue_scripts', array(__CLASS__, 'sns'), 100 );
-		add_action( 'wp_print_footer_scripts', array(__CLASS__, '_sns_vars'), 9 );
+		#add_action( 'wp_print_footer_scripts', array(__CLASS__, '_sns_vars'), 9 );
 		add_action( 'tha_entry_content_after', array(__CLASS__, 'comments') );
 	}
 
