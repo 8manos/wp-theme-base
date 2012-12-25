@@ -103,14 +103,16 @@ function kct_doc_title( $title ) {
 
 
 # <head /> stuff
-function kct_head_stuff() { ?>
+function kct_head_stuff() {
+	?>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 <!--[if lt IE 9]>
 <?php wp_print_scripts( array('html5', 'html5-print') ) ?>
 <![endif]-->
-<?php }
+	<?php
+}
 
 
 /**
