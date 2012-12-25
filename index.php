@@ -1,7 +1,7 @@
 <?php get_header() ?>
 
 		<?php do_action( 'tha_content_before' ); ?>
-		<div id="content" role="main">
+		<div id="main" class="main-content" role="main">
 			<?php do_action( 'tha_content_top' ); ?>
 			<?php if ( have_posts() ) : ?>
 				<?php do_action( 'tha_loop_before' ); ?>
