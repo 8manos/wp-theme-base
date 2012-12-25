@@ -234,6 +234,13 @@ span.page-numbers {
 	padding:0 .25em;
 }
 
+.hidden-text {
+	text-indent: 100%;
+	white-space: nowrap;
+	overflow:hidden;
+	display:block;
+}
+
 
 /* Helper classes */
 /* For image replacement */
