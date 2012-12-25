@@ -118,7 +118,7 @@ function kct_head_stuff() {
 /**
  * Paginate Links on index pages
  */
-function kct_paginate_links( $query = null, $echo = true ) {
+function kct_page_navi( $query = null, $echo = true ) {
 	if ( !$query ) {
 		global $wp_query;
 		$query = $wp_query;
@@ -142,10 +142,15 @@ function kct_paginate_links( $query = null, $echo = true ) {
 	if ( empty($links) )
 		return false;
 
-	if ( $echo )
-		echo '<nav class="posts-nav">'.PHP_EOL."\t{$links}</nav>".PHP_EOL;
-	else
+	if ( $echo ) :
+	?>
+		<nav class="kc-page-navi">
+			<?php echo $links ?>
+		</nav>
+	<?php
+	else :
 		return $links;
+	endif;
 }
 
 
