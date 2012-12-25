@@ -150,55 +150,6 @@ function kct_paginate_links( $query = null, $echo = true ) {
 
 
 /**
- * Get post terms
- *
- * @param $post_object object Post object, either from global $post variable or using the get_post() function
- * @param $echo bool
- * @return array Post terms
- *
- */
-
-function kct_post_terms( $post_object = '', $echo = true ) {
-	if ( is_404() )
-		return;
-
-	if ( !$post_object ) {
-		global $post;
-		$post_object = $post;
-	}
-
-	if ( !is_object($post_object) )
-		return false;
-
-	$terms = array();
-	$taxonomies = get_object_taxonomies( $post_object->post_type, 'objects' );
-
-	if ( !is_array($taxonomies) || empty($taxonomies) )
-		return false;
-
-	foreach ( $taxonomies as $taxonomy ) {
-		if ( !$taxonomy->public )
-			continue;
-
-		$label = apply_filters( "kct_post_terms_tax_label_{$taxonomy->name}", $taxonomy->label );
-		if ( $post_tems = get_the_term_list($post_object->ID, $taxonomy->name, '', ', ') )
-			$terms[$taxonomy->name] = array('label' => $label , 'terms' => $post_tems);
-	}
-
-	$terms = apply_filters( 'kct_post_meta', $terms );
-	if ( !$echo )
-		return $terms;
-
-	$out  = '<ul class="entry-terms">'.PHP_EOL;
-	foreach ( $terms as $tax => $tax_terms )
-		$out .= "\t<li class='{$tax}'><span class='label'>{$tax_terms['label']}:</span> {$tax_terms['terms']}</li>";
-	$out .= '</ul>'.PHP_EOL;
-
-	echo $out;
-}
-
-
-/**
  * Get comments number of a post
  *
  * @param $post_id int Post ID
