@@ -45,7 +45,7 @@ class kcTheme {
 		add_filter( 'body_class', 'kct_body_class' );
 		add_filter( 'post_class', 'kct_post_class', 10, 3 );
 		add_filter( 'comment_form_default_fields', 'kct_comment_form_fields' );
-		add_filter( 'page_css_class', 'kct_page_css_class', 10, 5 );
+		add_filter( 'page_css_class', 'kct_list_pages_css_class', 10, 5 );
 
 		/* Enable [embed] shortcode in text widgets */
 		global $wp_embed;

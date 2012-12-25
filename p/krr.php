@@ -283,25 +283,24 @@ function kct_comment_form_fields( $fields ) {
  * Append some necessary CSS classes to page lists items
  * outputted by wp_list_pages() when used for a custom post type
  */
-function kct_page_css_class( $css_class, $page, $depth, $args, $current_page ) {
-	if ( !isset($args['post_type']) || !is_singular($args['post_type']) )
+function kct_list_pages_css_class( $css_class, $page, $depth, $args, $current_page ) {
+	if ( empty($args['post_type']) || !is_singular($args['post_type']) )
 		return $css_class;
 
-	global $post;
-	$current_page  = $post->ID;
-	$_current_page = $post;
-	_get_post_ancestors($_current_page);
-
-	if ( isset($_current_page->ancestors) && in_array($page->ID, (array) $_current_page->ancestors) )
-		$css_class[] = 'current_page_ancestor';
-	if ( $page->ID == $current_page )
-		$css_class[] = 'current_page_item';
-	elseif ( $_current_page && $page->ID == $_current_page->post_parent )
+	if ( !empty($current_page) ) {
+		$_current_page = get_post( $current_page );
+		if ( in_array( $page->ID, $_current_page->ancestors ) )
+			$css_class[] = 'current_page_ancestor';
+		if ( $page->ID == $current_page )
+			$css_class[] = 'current_page_item';
+		elseif ( $_current_page && $page->ID == $_current_page->post_parent )
+			$css_class[] = 'current_page_parent';
+	} elseif ( $page->ID == get_option('page_for_posts') ) {
 		$css_class[] = 'current_page_parent';
+	}
 
 	return $css_class;
 }
-add_filter( 'page_css_class', 'kct_page_css_class', 10, 5 );
 
 
 /**
