@@ -22,7 +22,7 @@ else {
 					<?php do_action( 'tha_entry_content_before' ); ?>
 					<div class="entry-content">
 						<?php do_action( 'tha_entry_content_top' ); ?>
-            <p><?php echo $info ?></p>
+						<p><?php echo $info ?></p>
 						<?php do_action( 'tha_entry_content_bottom' ); ?>
 					</div>
 					<?php do_action( 'tha_entry_content_after' ); ?>
