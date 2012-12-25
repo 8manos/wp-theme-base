@@ -28,22 +28,22 @@ $lang_attr = ob_get_clean();
 				<h2 id="site-description"><?php echo $site_desc ?></h2>
 				<?php } ?>
 			</hgroup>
-			<?php
-				if ( $menu_id = kc_get_menu_by_location('main') ) {
-					wp_nav_menu( array(
-						'menu'            => $menu_id,
-						'container'       => 'nav',
-						'container_id'    => 'main-menu',
-						'container_class' => 'menu-container main-menu-container',
-						'menu_class'      => 'menu main-menu',
-						'fallback_cb'     => false
-					) );
-					kc_dropdown_menu( $menu_id, array(
-						'menu_id' => 'main-menu-small',
-						'submit_text' => __('Go', 'THEME_NAME')
-					) );
-				}
+			<?php if ( $menu_id = kct_get_menu_by_location('main') ) : ?>
+			<?php wp_nav_menu( array(
+					'menu'            => $menu_id,
+					'container'       => 'nav',
+					'container_id'    => 'main-menu',
+					'container_class' => 'menu-container main-menu-container',
+					'menu_class'      => 'menu main-menu',
+					'fallback_cb'     => false
+				) );
 			?>
+			<?php kc_dropdown_menu( $menu_id, array(
+					'menu_id' => 'main-menu-small',
+					'submit_text' => __('Go', 'THEME_NAME')
+				) );
+			?>
+			<?php endif; ?>
 			<?php do_action( 'tha_header_bottom' ); ?>
 		</header>
 		<?php do_action( 'tha_header_after' ); ?>

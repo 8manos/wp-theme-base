@@ -309,7 +309,7 @@ function kct_list_pages_css_class( $css_class, $page, $depth, $args, $current_pa
  * @param string $location Theme location
  * @return bool|int Menu ID. False on failure
  */
-function kc_get_menu_by_location( $location ) {
+function kct_get_menu_by_location( $location ) {
 	$menu_id = false;
 	if (
 		( $locations = get_nav_menu_locations() )
