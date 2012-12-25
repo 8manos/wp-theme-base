@@ -36,21 +36,24 @@ function kct_body_class( $classes ) {
  * Print sidebar
  */
 function kct_do_sidebar( $sidebar, $wrap = true, $class = 'sidebar' ) {
-	if ( !is_active_sidebar($sidebar) ) return; ?>
+	if ( !is_active_sidebar($sidebar) )
+		return;
+?>
 <?php do_action( 'tha_sidebars_before', $sidebar, $wrap, $class ); ?>
 <?php if ( $wrap ) { ?>
 <div id="<?php echo $sidebar ?>" class="<?php echo $class ?>">
 <?php } ?>
-<?php do_action( 'tha_sidebar_top', $sidebar ); ?>
-<?php do_action( "tha_sidebar_top_{$sidebar}"  ); ?>
-<?php dynamic_sidebar( $sidebar ); ?>
-<?php do_action( "tha_sidebar_bottom_{$sidebar}" ); ?>
-<?php do_action( 'tha_sidebar_bottom', $sidebar ); ?>
+	<?php do_action( 'tha_sidebar_top', $sidebar ); ?>
+	<?php do_action( "tha_sidebar_top_{$sidebar}"  ); ?>
+	<?php dynamic_sidebar( $sidebar ); ?>
+	<?php do_action( "tha_sidebar_bottom_{$sidebar}" ); ?>
+	<?php do_action( 'tha_sidebar_bottom', $sidebar ); ?>
 <?php if ( $wrap ) { ?>
 </div>
 <?php } ?>
 <?php do_action( 'tha_sidebars_after', $sidebar, $wrap, $class ); ?>
-<?php }
+	<?php
+}
 
 
 /**
