@@ -24,12 +24,12 @@ class kcTheme {
 		add_theme_support( 'tha_hooks', array('all') );
 
 		# i18n
-		load_theme_textdomain( 'TEXT_DOMAIN', self::$dir_theme . '/l' );
+		load_theme_textdomain( 'persada', self::$dir_theme . '/l' );
 
 		# Menus
 		register_nav_menus( array(
-			'main' => __('Header Menu', 'TEXT_DOMAIN'),
-			'footer' => __('Footer Menu', 'TEXT_DOMAIN')
+			'main' => __('Header Menu', 'persada'),
+			'footer' => __('Footer Menu', 'persada')
 		) );
 
 		add_action( 'init', array(__CLASS__, 'defaults') );
@@ -60,7 +60,7 @@ class kcTheme {
 
 	public static function register_sidebars() {
 		$sidebars = array(
-			'wa-footer' => __('Footer widget area', 'TEXT_DOMAIN'),
+			'wa-footer' => __('Footer widget area', 'persada'),
 		);
 
 		foreach ( $sidebars as $id => $name )
@@ -77,13 +77,13 @@ class kcTheme {
 
 	public static function sns() {
 		$ver = '20120915';
-		wp_enqueue_style( 'TEXT_DOMAIN', self::$url_theme.'/style.css', false, $ver );
+		wp_enqueue_style( 'persada', self::$url_theme.'/style.css', false, $ver );
 
 		wp_register_script( 'html5', self::$url_theme.'/j/html5shiv.js', false, '3.6' );
 		wp_register_script( 'html5-print', self::$url_theme.'/j/html5shiv-printshiv.js', false, '3.6' );
 
 		#wp_register_script( 'yepnope', self::$url_theme.'/j/yepnope.1.5.4-min.js', false, '1.5.4', true );
-		#wp_enqueue_script( 'TEXT_DOMAIN', self::$url_theme.'/j/scripts.js', array('yepnope', 'jquery'), $ver, true );
+		#wp_enqueue_script( 'persada', self::$url_theme.'/j/scripts.js', array('yepnope', 'jquery'), $ver, true );
 
 		if ( is_singular() && post_type_supports(get_post_type(), 'comments') && comments_open() && get_option('thread_comments') )
 			wp_enqueue_script( 'comment-reply' );

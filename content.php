@@ -11,7 +11,7 @@
 					<?php do_action( 'tha_entry_content_before' ); ?>
 					<div class="entry-content">
 						<?php do_action( 'tha_entry_content_top' ); ?>
-						<?php the_content(__('Continue&hellip;', 'TEXT_DOMAIN')) ?>
+						<?php the_content(__('Continue&hellip;', 'persada')) ?>
 						<?php do_action( 'tha_entry_content_bottom' ); ?>
 					</div>
 					<?php do_action( 'tha_entry_content_after' ); ?>

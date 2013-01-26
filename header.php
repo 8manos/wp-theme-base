@@ -40,7 +40,7 @@ $lang_attr = ob_get_clean();
 			?>
 			<?php kc_dropdown_menu( $menu_id, array(
 					'menu_id' => 'main-menu-small',
-					'submit_text' => __('Go', 'THEME_NAME')
+					'submit_text' => __('Go', 'persada')
 				) );
 			?>
 			<?php endif; ?>

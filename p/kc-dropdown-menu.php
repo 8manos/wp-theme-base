@@ -28,7 +28,7 @@ class kcEssentials_Dropdown_Menu {
 			'pad'         => '&mdash;',
 			'echo'        => true,
 			'submit_text' => __('Submit'),
-			'select_text' => '&mdash;&nbsp;'.__('Navigate', 'THEME_NAME').'&nbsp;&mdash;',
+			'select_text' => '&mdash;&nbsp;'.__('Navigate', 'persada').'&nbsp;&mdash;',
 			'js'          => true,
 			'menu_class'  => '',
 			'menu_id'     => ''
